@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="testDate" class="java.util.Date" />
+	
+	<bean id="testPerson" class="info.tvir.server.security.model.Person">
+		<property name="login" value="login" />
+		<property name="password" value="password" />
+		<property name="enabled" value="true" />
+		<property name="firstname" value="firstname" />
+		<property name="lastname" value="lastname" />
+		<property name="displayname" value="displayname" />	
+	</bean>
+	
+	<bean id="testGroup" class="info.tvir.server.security.model.Group">
+		<property name="name" value="group_name" />
+		<property name="description" value="group description" />		
+	</bean>
+	
+	<bean id="testRole" class="info.tvir.server.security.model.Role">
+		<property name="name" value="ROLE_TEST" />
+		<property name="description" value="role description" />		
+	</bean>
+
+		
+</beans>

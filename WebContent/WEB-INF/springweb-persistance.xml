@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+			
+		
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver"/>
+		 
+		<property name="url" value="jdbc:postgresql://localhost/test"/>
+		<property name="username" value="roottest"/>
+		<property name="password" value="roottest"/>
+		 
+		<!--  
+		<property name="url" value="jdbc:postgresql://localhost/aqua"/>
+		<property name="username" value="rootaqua"/>
+		<property name="password" value="rootaqua"/>
+		 -->
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>		
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>		
+		<property name="hibernateProperties" >
+			<props>				
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				 
+				<prop key="hibernate.hbm2ddl.auto">update</prop>				
+			</props>			
+		</property>
+		<property name="packagesToScan" value="info.tvir"></property>
+	</bean>
+	 	
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="hibernateDaoImpl" class="info.tvir.hibernateutils.dao.impl.HibernateDaoImpl" abstract="true">
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="personDao" class="info.tvir.server.security.dao.impl.PersonHbmImpl" >
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+	
+	<bean id="groupDao" class="info.tvir.server.security.dao.impl.GroupHbmImpl" >
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+	
+	<bean id="roleDao" class="info.tvir.server.security.dao.impl.RoleHbmImpl" >
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+	
+	<bean id="groupMembersDao" class="info.tvir.server.security.dao.impl.GroupMembersHbmImpl" >
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+	
+	<bean id="groupRolesDao" class="info.tvir.server.security.dao.impl.GroupRolesHbmImpl" >
+		<property name="template" ref="hibernateTemplate"/>
+	</bean>
+
+</beans>
